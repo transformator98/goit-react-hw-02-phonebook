@@ -3,14 +3,22 @@ import { v4 as uuidv4 } from 'uuid';
 
 class App extends Component {
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
+    contacts: [],
     name: '',
     number: '',
+  };
+
+  addContact = ({ name, number }) => {
+    console.log('name', name);
+    console.log('number', number);
+    const contact = {
+      id: uuidv4(),
+      name,
+      number,
+    };
+    this.setState(({ contacts }) => ({
+      contacts: [contact, ...contacts],
+    }));
   };
 
   handleInputChange = event => {
@@ -20,7 +28,14 @@ class App extends Component {
   handleSubmit = event => {
     event.preventDefault();
     console.log(this.state);
+
+    this.reset();
   };
+
+  reset = () => {
+    this.setState({ name: '', number: '' });
+  };
+
   render() {
     const { name, number } = this.state;
 
@@ -51,9 +66,13 @@ class App extends Component {
         </form>
         <h2>contact</h2>
         <ul>
-          <li className="a">Rosie Simpson</li>
-          <li className="a">Rosie Simpson</li>
-          <li className="a">Rosie Simpson</li>
+          {this.state.contacts.map(contact => (
+            <li>
+              <p>
+                {contact.name}: {contact.number}
+              </p>
+            </li>
+          ))}
         </ul>
       </div>
     );
