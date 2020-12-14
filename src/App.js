@@ -17,8 +17,11 @@ class App extends Component {
   };
   repeatContact = (name, number) => {
     const { contacts } = this.state;
-    const repeatName = !!contacts.find(contact => contact.name === name);
-    return repeatName;
+    const repeatNameAndNumber = !!contacts.find(
+      contact => contact.name === name || contact.number === number,
+    );
+
+    return repeatNameAndNumber;
   };
 
   addContact = (name, number) => {
@@ -28,6 +31,7 @@ class App extends Component {
       number,
     };
     const repeat = this.repeatContact(name, number);
+    console.log(repeat);
 
     !name || !number
       ? alert('You did not enter a name or number')
