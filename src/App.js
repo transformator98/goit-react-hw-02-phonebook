@@ -1,9 +1,10 @@
 import { Component } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import Contacts from './Contact';
+import ContactsForm from './ContactForm';
 import Filter from './Filter';
 import ContactList from './ContactList';
+import Container from './Container';
 
 class App extends Component {
   state = {
@@ -60,17 +61,20 @@ class App extends Component {
     );
 
     return (
-      <div>
-        <h1>phonebook</h1>
-        <Contacts onAddSubmit={this.addContact} onRepeat={this.repeatContact} />
-        <h2>contact</h2>
+      <Container>
+        <h1>Phonebook</h1>
+        <ContactsForm
+          onAddSubmit={this.addContact}
+          onRepeat={this.repeatContact}
+        />
+        <h2>Contact</h2>
         <Filter value={filter} onChange={this.changeFilter} />
 
         <ContactList
           contacts={visibleContacts}
           onDeleteContact={this.deleteContact}
         />
-      </div>
+      </Container>
     );
   }
 }
