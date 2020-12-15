@@ -18,6 +18,7 @@ class App extends Component {
   };
   repeatContact = (name, number) => {
     const { contacts } = this.state;
+
     const repeatNameAndNumber = !!contacts.find(
       contact => contact.name === name || contact.number === number,
     );
@@ -26,21 +27,28 @@ class App extends Component {
   };
 
   addContact = (name, number) => {
+    const repeat = this.repeatContact(name, number);
+    if (name.length < 2) {
+      alert(`Текст должен быть не меньше 2 символов, сейчас ${name.length}`);
+      return;
+    }
+
+    if (number.length < 5) {
+      alert(`Номер должен быть не меньше 5 символов, сейчас ${number.length}`);
+      return;
+    }
+
+    repeat
+      ? alert(`${name} is already exist!`)
+      : this.setState(({ contacts }) => ({
+          contacts: [contact, ...contacts],
+        }));
+
     const contact = {
       id: uuidv4(),
       name,
       number,
     };
-    const repeat = this.repeatContact(name, number);
-    console.log(repeat);
-
-    !name || !number
-      ? alert('You did not enter a name or number')
-      : repeat
-      ? alert(`${name} is already exist!`)
-      : this.setState(({ contacts }) => ({
-          contacts: [contact, ...contacts],
-        }));
   };
 
   deleteContact = contactId => {
@@ -53,12 +61,18 @@ class App extends Component {
     this.setState({ filter: event.target.value });
   };
 
-  render() {
+  getVisibleContact = () => {
     const { contacts, filter } = this.state;
     const normalizeFilter = filter.toLowerCase();
-    const visibleContacts = contacts.filter(contact =>
+    return contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalizeFilter),
     );
+  };
+
+  render() {
+    const { filter } = this.state;
+
+    const visibleContacts = this.getVisibleContact();
 
     return (
       <Container>
